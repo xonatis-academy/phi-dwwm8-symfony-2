@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>Panier</h1>
+<div>Total du panier {{ cart.total }} €</div>
+
+<div>
+    <a href="{{ path('panier_vider') }}">Vider mon petit panier</a>
+</div>
+
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Prix unitaire</th>
+        <th>Quantite</th>
+        <th>...</th>
+    </tr>
+
+    {% for element in cart.elements %}
+        <tr>
+            <td>{{ element.book.id }}</td>
+            <td>{{ element.book.title }}</td>
+            <td>{{ element.book.price }}</td>
+            <td>{{ element.quantity }}</td>
+            <td>
+                <a href="{{ path('panier_add', {'id': element.book.id}) }}">+</a>
+                <a href="{{ path('panier_enlever', {'id': element.book.id}) }}">-</a>
+                <a href="{{ path('panier_supprimer', {'id': element.book.id}) }}">-</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">Votre panier est vide</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
