@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Book;
 use App\Repository\BookRepository;
 use App\Service\CartService;
+use App\Service\PaymentService;
 
 class PanierController extends AbstractController
 {
@@ -56,5 +57,17 @@ class PanierController extends AbstractController
     {
         $cartService->removeLine($book);
         return $this->redirectToRoute('panier_index');
+    }
+
+    /**
+     * @Route("/panier/valider", name="panier_validate")
+     */
+    public function validate(PaymentService $paymentService): Response
+    {
+        $stripeSessionId = $paymentService->create();
+
+        return $this->render('panier/redirect.html.twig', [
+            'stripeSessionId' => $stripeSessionId
+        ]);
     }
 }
